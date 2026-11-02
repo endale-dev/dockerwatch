@@ -1,15 +1,14 @@
-package main
+package main 
 
 
 
 import(
-	"context"
 	"fmt"
+	"context"
 	"log"
 	"github.com/moby/moby/client"
+	
 )
-
-
 
 
 func main(){
@@ -22,21 +21,15 @@ func main(){
 
 	defer dockerClient.Close()
 
-	result,err:=dockerClient.ContainerList(context.Background(), client.ContainerListOptions{All:true})
+	result, err:=dockerClient.ContainerList(context.Background(), client.ContainerListOptions{All:true})
 
-	if err!=nil{
-		log.Fatal(err)
-	}
-
-	fmt.Println("ID\tSTATUS\tIMAGE")
-
-	for _, container:=range result.Items{
+	for _,container:=range result.Items{
 
 		fmt.Printf(
 			"%s\t%s\t%s\n",
-			container.ID[:12],
+			container.ID,
 			container.Status,
 			container.Image,
-		)
+	)
 	}
 }
