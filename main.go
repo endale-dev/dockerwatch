@@ -1,20 +1,27 @@
-package main 
-
+package main
 
 import (
-	"net/http"
+	"dockerwatch/docker"
+	"dockerwatch/server"
 	"fmt"
+	"log"
+	"net/http"
 )
 
 
-func AllContainersListhandler(w http.ResponseWriter, r*http.Request){
-
-}
 
 func main(){
+	
+    dockerClient,err:=docker.NewDockerClient()
+	if err!=nil{
+		log.Fatal("Failed to Create Docker client ",err)
+	}
 
-    http.HandleFunc("/", AllContainersListhandler)
-	http.ListenAndServe(":8080", nil)
+	srv:=server.NewServer(dockerClient)
+    http.HandleFunc("/", srv.AllContainersListHandler)
+
 	fmt.Println("Server Running on port 8080")
+	http.ListenAndServe(":8080", nil)
+	
 
 }
