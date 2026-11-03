@@ -41,6 +41,10 @@ func (d *DockerClient) ListContainers(ctx context.Context) ([]container.Summary,
 	return result.Items, nil
 } 
 
+func(d *DockerClient)Close(){
+	d.client.Close()
+}
+
 
 func main(){
     var ctx context.Context =context.Background()
@@ -48,6 +52,8 @@ func main(){
 	if err!=nil{
 		log.Fatal(err)
 	}
+
+	defer docker.Close()
 
 	res, err:=docker.ListContainers(ctx)
     
