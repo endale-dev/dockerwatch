@@ -47,7 +47,7 @@ func(d *DockerClient)Close(){
 
 
 func main(){
-    var ctx context.Context =context.Background()
+    ctx:=context.Background()
 	docker,err:=NewDockerClient()
 	if err!=nil{
 		log.Fatal(err)
@@ -57,12 +57,20 @@ func main(){
 
 	res, err:=docker.ListContainers(ctx)
     
+	if err!=nil{
+		log.Fatal(err)
+	}
 
 	fmt.Println("ID    Status   Image")
 	for _,container:=range res{
+
+		id:=container.ID
+		if len(id)>12{
+			id=id[:12]
+		}
 		fmt.Printf(
 			"%s\t%s\t%s\n",
-			container.ID[:12],
+			id,
 			container.Status,
 			container.Image,
 		)
